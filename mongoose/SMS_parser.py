@@ -53,4 +53,4 @@ class SMSParser:
         match = re.search(pattern, self.sms)
         if match:
             self.data['Date'] = match.group(1)        
-parser = SMSParser("Rs.470.82 debited A/cXX5578 and credited to Jio Prepaid Recharges via UPI Ref No 546722117792 on 11Apr25.")
+
