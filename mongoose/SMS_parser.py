@@ -1,4 +1,6 @@
+from mongoose.models import raw_data
 import re 
+
 
 class SMSParser:
     def __init__(self, sms):
@@ -52,5 +54,4 @@ class SMSParser:
         pattern = r'on (\w*).'
         match = re.search(pattern, self.sms)
         if match:
-            self.data['Date'] = match.group(1)        
-
+            self.data['Date'] = match.group(1)
