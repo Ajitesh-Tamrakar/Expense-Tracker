@@ -6,6 +6,7 @@ import requests
 from .models import raw_data
 from . import variables
 import re
+from .sms_parser import SMSParser
 # Create your views here.
 
 @csrf_exempt
@@ -31,10 +32,15 @@ def getting_db(request):
         pattern = r'HDFC|BOI|KOTAK' #getting messages only from banks
         match = re.search(pattern, sender_id)
         if match:
-            bank_data = sms_obj.filter(message_id=id).values().first()
-            li.append(bank_data)
+            bank_data = sms_obj.filter(message_id = id).values_list('message', flat=True).first()
+            if 'OTP' not in bank_data:
+                parser = SMSParser(bank_data)
+                sms_values = parser.output()
+                if sms_values['amount'] != 'not found':      
+                    li.append(sms_values['amount'])
+                    # li.append(bank_data)
     data = li
+    print(len(data))
     return render(request, 'mongoose/index.html',{
-    'data': data
-    })
-        
+    'data': data,
+   })
